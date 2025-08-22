@@ -44,3 +44,87 @@ Migrating to AddDeviseToUsers (20250822122730)
   [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT /*application='ImageGalleryApp'*/[0m
   [1m[36mUser Count (4.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" /*application='ImageGalleryApp'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-08-22 13:59:06 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (9.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.6ms | GC: 0.1ms)
+Completed 200 OK in 1427ms (Views: 8.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 135.7ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2025-08-22 13:59:35 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/login"):
+  
+Started GET "/login" for 127.0.0.1 at 2025-08-22 13:59:37 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/login"):
+  
+Started GET "/" for 127.0.0.1 at 2025-08-22 13:59:45 +0100
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 5.3ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 8.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2025-08-22 14:00:42 +0100
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/devise-4.9.4/app/views/devise/registrations/new.html.erb within layouts/application
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/devise-4.9.4/app/views/devise/shared/_error_messages.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/devise-4.9.4/app/views/devise/shared/_links.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/devise-4.9.4/app/views/devise/registrations/new.html.erb within layouts/application (Duration: 17.1ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.4ms | GC: 0.5ms)
+Completed 500 Internal Server Error in 331ms (ActiveRecord: 209.6ms (0 queries, 0 cached) | GC: 5.6ms)
+
+
+  
+ActionView::Template::Error (The asset "app.css" is not present in the asset pipeline.
+)
+Caused by: Sprockets::Rails::Helper::AssetNotFound (The asset "app.css" is not present in the asset pipeline.
+)
+
+Information for: ActionView::Template::Error (The asset "app.css" is not present in the asset pipeline.
+):
+    18:     <link rel="apple-touch-icon" href="/icon.png">
+    19: 
+    20:     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    21:     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    22:     <%= javascript_importmap_tags %>
+    23:   </head>
+    24: 
+  
+app/views/layouts/application.html.erb:21
+
+Information for cause: Sprockets::Rails::Helper::AssetNotFound (The asset "app.css" is not present in the asset pipeline.
+):
+  
+app/views/layouts/application.html.erb:21
+Started GET "/favicon.ico" for ::1 at 2025-08-22 14:00:44 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Exists? (18.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'test@example.com' LIMIT 1 /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (8.4ms)[0m  [1m[31mROLLBACK /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (2.3ms)[0m  [1m[35mBEGIN /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Exists? (4.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'test@example.com' LIMIT 1 /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Exists? (6.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'edikansam1@gmail.com' LIMIT 1 /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Create (5.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "created_at", "updated_at") VALUES ('edikansam1@gmail.com', '$2a$12$wzyZFiTarTw55Bx1X8dQNe4o9h8JWwaM0SUq.fNsq5YIxhbzdkrTy', NULL, NULL, NULL, '2025-08-22 13:10:38.680418', '2025-08-22 13:10:38.680418') RETURNING "id" /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT /*application='ImageGalleryApp'*/[0m
+Started GET "/login" for 127.0.0.1 at 2025-08-22 14:37:31 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/login"):
+  
+Started GET "/login" for 127.0.0.1 at 2025-08-22 14:37:32 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/login"):
+  
+Started GET "/signup" for 127.0.0.1 at 2025-08-22 14:37:41 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/signup"):
+  
+  [1m[36mUser Exists? (13.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'invalid-email' LIMIT 1 /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Exists? (6.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'valid@example.com' LIMIT 1 /*application='ImageGalleryApp'*/[0m
