@@ -1,0 +1,5 @@
+<%= form.select :status, options_for_select([
+  ['Published (Public)', 'published'],
+  ['Personal (Only You)', 'personal'],
+  ['Draft', 'draft']
+], gallery.status), {}, { class: "form-select" } %>

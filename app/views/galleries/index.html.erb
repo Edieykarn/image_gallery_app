@@ -1,2 +1,48 @@
-<h1>Galleries#index</h1>
-<p>Find me in app/views/galleries/index.html.erb</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Discover Beautiful Galleries</h1>
+  <% if user_signed_in? %>
+    <%= link_to "Create New Gallery", new_gallery_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="row">
+  <% @galleries.each do |gallery| %>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <% if gallery.cover_photo %>
+          <%= image_tag gallery.cover_photo, class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+        <% else %>
+          <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+            <i class="fas fa-images fa-3x text-muted"></i>
+          </div>
+        <% end %>
+        
+        <div class="card-body">
+          <h5 class="card-title"><%= gallery.title %></h5>
+          <p class="card-text"><%= truncate(gallery.description, length: 100) %></p>
+          <small class="text-muted">
+            by <%= gallery.user.display_name %> • <%= gallery.photos.count %> photos
+          </small>
+        </div>
+        
+        <div class="card-footer bg-transparent">
+          <%= link_to "View Gallery", gallery, class: "btn btn-outline-primary me-2" %>
+          <%= link_to "Slideshow", slideshow_gallery_path(gallery), class: "btn btn-outline-secondary", target: "_blank" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @galleries.empty? %>
+  <div class="text-center py-5">
+    <i class="fas fa-images fa-5x text-muted mb-3"></i>
+    <h3 class="text-muted">No galleries yet</h3>
+    <p class="text-muted">Be the first to create a beautiful gallery!</p>
+    <% if user_signed_in? %>
+      <%= link_to "Create First Gallery", new_gallery_path, class: "btn btn-primary btn-lg" %>
+    <% else %>
+      <%= link_to "Sign Up to Create", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+    <% end %>
+  </div>
+<% end %>

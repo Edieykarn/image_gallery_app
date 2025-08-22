@@ -7,9 +7,9 @@ class Gallery < ApplicationRecord
   validates :description, length: { maximum: 1000 }
   validates :user, presence: true
   
-  enum status: { draft: 0, published: 1, private: 2 }
+  enum :status, { draft: 0, published: 1, personal: 2 }
   
-  scope :published_galleries, -> { published.includes(:photos, :user) }
+  scope :published_galleries, -> { where(status: :published).includes(:photos, :user) }
   scope :recent, -> { order(created_at: :desc) }
   
   def cover_photo
