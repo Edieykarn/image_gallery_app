@@ -154,3 +154,11 @@ FOREIGN KEY ("gallery_id")
   [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(1235243707265941170) /*application='ImageGalleryApp'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
   [1m[36mUser Load (6.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='ImageGalleryApp'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-08-22 14:55:50 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (6.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/ediks/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 7.1ms | GC: 0.0ms)
+Completed 200 OK in 23ms (Views: 12.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
