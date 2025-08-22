@@ -37,7 +37,7 @@ gem "bootsnap", ">= 1.4.0", require: false
 # gem "solid_queue"
 # gem "solid_cable"
 
-# Authentication and Authorization
+# Authentication 
 gem "devise"
 gem "cancancan"
 
