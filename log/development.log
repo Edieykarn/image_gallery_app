@@ -128,3 +128,29 @@ ActionController::RoutingError (No route matches [GET] "/signup"):
   
   [1m[36mUser Exists? (13.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'invalid-email' LIMIT 1 /*application='ImageGalleryApp'*/[0m
   [1m[36mUser Exists? (6.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'valid@example.com' LIMIT 1 /*application='ImageGalleryApp'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (5.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(1235243707265941170) /*application='ImageGalleryApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (7.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (5.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='ImageGalleryApp'*/[0m
+Migrating to CreateGalleries (20250822134644)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='ImageGalleryApp'*/[0m
+  [1m[35m (43.2ms)[0m  [1m[35mCREATE TABLE "galleries" ("id" bigserial primary key, "title" character varying, "description" text, "user_id" bigint NOT NULL, "status" integer, "views_count" integer, "likes_count" integer, "photos_count" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_05f824a025"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='ImageGalleryApp'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_galleries_on_user_id" ON "galleries" ("user_id") /*application='ImageGalleryApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250822134644') RETURNING "version" /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT /*application='ImageGalleryApp'*/[0m
+Migrating to CreatePhotos (20250822134728)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN /*application='ImageGalleryApp'*/[0m
+  [1m[35m (9.7ms)[0m  [1m[35mCREATE TABLE "photos" ("id" bigserial primary key, "title" character varying, "description" text, "gallery_id" bigint NOT NULL, "likes_count" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_2e5d9f85e5"
+FOREIGN KEY ("gallery_id")
+  REFERENCES "galleries" ("id")
+) /*application='ImageGalleryApp'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_photos_on_gallery_id" ON "photos" ("gallery_id") /*application='ImageGalleryApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250822134728') RETURNING "version" /*application='ImageGalleryApp'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='ImageGalleryApp'*/[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(1235243707265941170) /*application='ImageGalleryApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='ImageGalleryApp'*/[0m
+  [1m[36mUser Load (6.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='ImageGalleryApp'*/[0m
