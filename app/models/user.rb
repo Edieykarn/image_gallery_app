@@ -1,4 +1,9 @@
+# app/models/user.rb
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -6,8 +11,13 @@ class User < ApplicationRecord
   has_many :photos, through: :galleries
 
   validates :email, presence: true, uniqueness: true
+  validates :first_name, :last_name, presence: true
 
   def display_name
-    email.split('@').first.capitalize
+    "#{first_name} #{last_name}".strip
+  end
+
+  def initials
+    "#{first_name&.first}#{last_name&.first}".upcase
   end
 end

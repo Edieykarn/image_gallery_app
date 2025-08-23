@@ -1,0 +1,12 @@
+<!-- app/views/devise/shared/_error_messages.html.erb -->
+<% if resource.errors.any? %>
+  <div class="alert alert-danger alert-dismissible fade show">
+    <% if resource.errors[:email].include?("has already been taken") %>
+      <strong>Email already registered!</strong> This email is already associated with an account. 
+      <%= link_to "Try signing in instead", new_user_session_path, class: "alert-link" %>.
+    <% elsif resource.errors.any? %>
+      <strong>Please check your information.</strong> Some fields need to be corrected before you can continue.
+    <% end %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% end %>
