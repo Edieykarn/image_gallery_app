@@ -1,2 +1,17 @@
-<h1>Galleries#edit</h1>
-<p>Find me in app/views/galleries/edit.html.erb</p>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3>Edit Gallery</h3>
+      </div>
+      <div class="card-body">
+        <%= render 'form', gallery: @gallery %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-3">
+  <%= link_to 'View Gallery', @gallery, class: "btn btn-secondary me-2" %>
+  <%= link_to 'Back to Galleries', galleries_path, class: "btn btn-outline-secondary" %>
+</div>

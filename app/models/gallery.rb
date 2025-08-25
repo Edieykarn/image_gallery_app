@@ -1,7 +1,7 @@
-class Gallery < ApplicationRecord
+class Gallery < ApplicationRecord 
   belongs_to :user
   has_many :photos, dependent: :destroy
-  has_one_attached :cover_image
+  has_one_attached :cover_image #only one thumbnail 
   
   validates :title, presence: true, length: { minimum: 3, maximum: 100 }
   validates :description, length: { maximum: 1000 }
@@ -16,7 +16,14 @@ class Gallery < ApplicationRecord
     cover_image.attached? ? cover_image : photos.first&.image
   end
 
+  def owner?(user)
+    self.user == user
+  end
+
   def can_be_viewed_by?(user)
     published? || (user && user == self.user)
+  end
+  def photo_count
+    photos.count
   end
 end

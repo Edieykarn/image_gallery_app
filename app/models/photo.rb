@@ -1,30 +1,36 @@
 class Photo < ApplicationRecord
   belongs_to :gallery
+  has_one :user, through: :gallery
   has_one_attached :image
-  has_one_attached :thumbnail
-  
-  validates :title, presence: true, length: { maximum: 100 }
-  validates :description, length: { maximum: 500 }
-  validates :image, presence: true
+
   validates :gallery, presence: true
-  
+  validates :image, presence: true
+
+  scope :ordered, -> { order(:id) }
   scope :recent, -> { order(created_at: :desc) }
-  
-  after_commit :generate_thumbnail, on: [:create, :update], if: :image_attached?
+
+  # Image variants for thumbnails and full display
+  def thumbnail
+    image.attached? ? image.variant(resize_to_limit: [300, 300]) : nil
+  end
+
+  def display_image
+    image.attached? ? image.variant(resize_to_limit: [1200, 800]) : nil
+  end
+
+  # Navigation
+  def next_photo
+   gallery.photos.where('id > ?', id).ordered.first
+  end
+
+  def previous_photo
+    gallery.photos.where('id < ?', id).ordered.last
+  end
 
   private
 
-  def image_attached?
-    image.attached? && image.blob.persisted?
-  end
-
-  def generate_thumbnail
-    return unless image.attached?
-
-    thumbnail.attach(
-      io: StringIO.new(image.variant(resize_to_limit: [400, 400]).processed.download),
-      filename: "thumb_#{image.filename}",
-      content_type: image.content_type
-    )
+  def image_attached
+    errors.add(:image, "must be attached") unless image.attached?
   end
 end
+

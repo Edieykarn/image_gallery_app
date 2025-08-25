@@ -1,10 +1,10 @@
 class GalleriesController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show, :slideshow]
   before_action :set_gallery, only: [:show, :edit, :update, :destroy, :slideshow]
   before_action :ensure_gallery_owner, only: [:edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:index, :show, :slideshow]
 
   def index
-    @galleries = Gallery.published_galleries.recent.includes(:photos, :user)
+    @galleries = Gallery.published_galleries.includes(:user, :photos, photos: { image_attachment: :blob }).recent
   end
 
   def show
@@ -12,8 +12,7 @@ class GalleriesController < ApplicationController
       redirect_to galleries_path, alert: 'Gallery not found or access denied.'
       return
     end
-    
-    @photos = @gallery.photos.includes(image_attachment: :blob).recent
+    @photos = @gallery.photos.includes(image_attachment: :blob).ordered
   end
 
   def slideshow
@@ -21,9 +20,7 @@ class GalleriesController < ApplicationController
       redirect_to galleries_path, alert: 'Gallery not found or access denied.'
       return
     end
-    
-    @photos = @gallery.photos.includes(image_attachment: :blob)
-    render layout: 'slideshow'
+    @photos = @gallery.photos.includes(image_attachment: :blob).ordered
   end
 
   def new
@@ -32,11 +29,12 @@ class GalleriesController < ApplicationController
 
   def create
     @gallery = current_user.galleries.build(gallery_params)
+    @gallery.status = 'published' # Default to published so it shows publicly
     
     if @gallery.save
       redirect_to @gallery, notice: 'Gallery created successfully!'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -47,7 +45,7 @@ class GalleriesController < ApplicationController
     if @gallery.update(gallery_params)
       redirect_to @gallery, notice: 'Gallery updated successfully!'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -60,16 +58,17 @@ class GalleriesController < ApplicationController
 
   def set_gallery
     @gallery = Gallery.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to galleries_path, alert: 'Gallery not found.'
   end
 
   def gallery_params
-    params.require(:gallery).permit(:title, :description, :status, :cover_image)
+    params.require(:gallery).permit(:title, :description, :status)
   end
 
   def ensure_gallery_owner
-    unless @gallery.user == current_user
+    unless @gallery.owner?(current_user)
       redirect_to galleries_path, alert: 'Access denied. You can only manage your own galleries.'
     end
   end
 end
-

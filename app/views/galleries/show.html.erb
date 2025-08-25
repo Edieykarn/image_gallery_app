@@ -1,2 +1,88 @@
-<h1>Galleries#show</h1>
-<p>Find me in app/views/galleries/show.html.erb</p>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1><%= @gallery.title %></h1>
+          <p class="text-muted"><%= @gallery.description %></p>
+          <small class="text-muted">
+            by <%= @gallery.user.first_name %> <%= @gallery.user.last_name %> • 
+            <%= @gallery.photo_count %> photos
+          </small>
+        </div>
+        
+        <% if current_user&.== @gallery.user %>
+          <div class="btn-group">
+            <%= link_to "Upload Photos", new_gallery_photo_path(@gallery), class: "btn btn-primary" %>
+            <%= link_to "Edit Gallery", edit_gallery_path(@gallery), class: "btn btn-outline-secondary" %>
+            <%= link_to "Delete Gallery", gallery_path(@gallery),
+                        data: { 
+                          turbo_method: :delete,
+                          confirm: "Are you sure? This will delete the gallery and all photos." 
+                        },
+                        class: "btn btn-outline-danger" %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Slideshow Button -->
+      <% if @photos.count > 1 %>
+        <div class="mb-4">
+          <%= link_to slideshow_gallery_path(@gallery), class: "btn btn-success" do %>
+            <i class="fas fa-play"></i> Start Slideshow
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Thumbnails Grid -->
+      <% if @photos.any? %>
+        <div class="row g-3">
+          <% @photos.each do |photo| %>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div class="card">
+                <% if photo.image.attached? %>
+                  <%= link_to gallery_photo_path(@gallery, photo), class: "text-decoration-none" do %>
+                    <%= image_tag url_for(photo.thumbnail), 
+                                  class: "card-img-top", 
+                                  style: "height: 200px; object-fit: cover; cursor: pointer;" %>
+                  <% end %>
+                <% else %>
+                  <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-camera fa-2x text-muted"></i>
+                  </div>
+                <% end %>
+
+                <% if current_user&.== @gallery.user %>
+                  <div class="card-body p-2">
+                    <div class="btn-group btn-group-sm w-100">
+                      <%= link_to "Edit", edit_gallery_photo_path(@gallery, photo), class: "btn btn-outline-primary" %>
+                      <%= link_to "Delete", gallery_photo_path(@gallery, photo),
+                                  data: { 
+                                    turbo_method: :delete,
+                                    confirm: "Delete this photo?" 
+                                  },
+                                  class: "btn btn-outline-danger" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-camera fa-5x text-muted mb-3"></i>
+          <h3 class="text-muted">No photos in this gallery</h3>
+          <% if current_user&.== @gallery.user %>
+            <p class="text-muted">Upload some photos to get started!</p>
+            <%= link_to "Upload Photos", new_gallery_photo_path(@gallery), class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "← Back to All Galleries", galleries_path, class: "btn btn-outline-secondary" %>
+  </div>
+</div>

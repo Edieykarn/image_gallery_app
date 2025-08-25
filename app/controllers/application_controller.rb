@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
   
-
+  # Add this line back - this is what's missing!
   before_action :authenticate_user!, unless: :public_controller_or_action?
 
   protected

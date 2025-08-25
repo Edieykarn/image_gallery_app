@@ -1,0 +1,43 @@
+<div class="container mt-4 text-center">
+  <h2>Slideshow: <%= @gallery.title %></h2>
+
+  <% if @photos.any? %>
+    <div id="slideshow-container">
+      <% @photos.each_with_index do |photo, index| %>
+        <%= image_tag photo.display_image, 
+                      id: "slide-#{index}", 
+                      class: "img-fluid d-none", 
+                      style: "max-height: 80vh; max-width: 95vw;" %>
+      <% end %>
+    </div>
+
+    <div class="mt-3">
+      <button id="prev" class="btn btn-secondary">Previous</button>
+      <button id="next" class="btn btn-secondary">Next</button>
+    </div>
+  <% else %>
+    <p>No photos in this gallery.</p>
+  <% end %>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const slides = document.querySelectorAll("[id^='slide-']");
+  let current = 0;
+
+  if(slides.length > 0) slides[0].classList.remove("d-none");
+
+  document.getElementById("next")?.addEventListener("click", function() {
+    slides[current].classList.add("d-none");
+    current = (current + 1) % slides.length;
+    slides[current].classList.remove("d-none");
+  });
+
+  document.getElementById("prev")?.addEventListener("click", function() {
+    slides[current].classList.add("d-none");
+    current = (current - 1 + slides.length) % slides.length;
+    slides[current].classList.remove("d-none");
+  });
+});
+</script>
+
