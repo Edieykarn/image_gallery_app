@@ -1,36 +1,233 @@
-cat > app/assets/stylesheets/application.css 
 /*
- * This is a manifest file that'll be compiled into application.css
+ * This is a manifest file compiled into application.css
  *= require_tree .
  *= require_self
  */
 
-/* Basic styles for the luxury gallery */
+/* Image Gallery Custom Styles */
+
+
+:root {
+  --luxury-cream: #faf8f5;
+  --luxury-beige: #e8dcc0;
+  --luxury-gold: #d4af37;
+  --luxury-gold-light: #f4e7a1;
+  --luxury-gold-dark: #b8941f;
+  --luxury-grey: #6b6b6b;
+  --luxury-grey-dark: #4a4a4a;
+  --luxury-charcoal: #2c2c2c;
+  --luxury-white: #ffffff;
+  --luxury-shadow: rgba(212, 175, 55, 0.1);
+  --luxury-border: rgba(212, 175, 55, 0.2);
+}
+
+/* Global Styles */
 body {
+  background: linear-gradient(135deg, var(--luxury-cream) 0%, var(--luxury-beige) 100%);
   font-family: 'Source Sans Pro', sans-serif;
-  background: #fafafa;
+  color: var(--luxury-charcoal);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--luxury-charcoal);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+  font-family: 'Playfair Display', serif;
+}
+
+h1::after {
+  content: '';
+  width: 80px;
+  height: 2px;
+  background: var(--luxury-gold);
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Navigation */
+.navbar {
+  background: var(--luxury-white) !important;
+  box-shadow: 0 2px 20px var(--luxury-shadow);
+  border-bottom: 1px solid var(--luxury-border);
+  padding: 1rem 0;
 }
 
 .navbar-brand {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
+  color: var(--luxury-gold-dark) !important;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
 }
 
-.card {
+.nav-link {
+  color: var(--luxury-grey) !important;
+  font-weight: 300;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--luxury-gold-dark) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--luxury-gold) 0%, var(--luxury-gold-dark) 100%);
   border: none;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  color: var(--luxury-white);
+  padding: 12px 30px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--luxury-shadow);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--luxury-gold-dark) 0%, var(--luxury-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--luxury-shadow);
+  color: var(--luxury-white);
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--luxury-gold);
+  color: var(--luxury-gold-dark);
+  background: transparent;
+  padding: 10px 25px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background: var(--luxury-gold);
+  color: var(--luxury-white);
+  border-color: var(--luxury-gold);
+  transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+  border: 2px solid var(--luxury-grey);
+  color: var(--luxury-grey);
+  background: transparent;
+  padding: 10px 25px;
+  font-weight: 300;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--luxury-grey);
+  color: var(--luxury-white);
+  border-color: var(--luxury-grey);
+}
+
+.btn-outline-danger {
+  border: 2px solid #c85a54;
+  color: #c85a54;
+  background: transparent;
+  padding: 10px 25px;
+  font-weight: 300;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: #c85a54;
+  color: var(--luxury-white);
+  border-color: #c85a54;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #8fbc8f 0%, #556b55 100%);
+  border: none;
+  color: var(--luxury-white);
+  padding: 12px 30px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+/* Cards - Enhanced from your original */
+.card {
+  background: var(--luxury-white);
+  border: 1px solid var(--luxury-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--luxury-shadow);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px var(--luxury-shadow);
 }
 
-/* Gallery image styles */
+.card-header {
+  background: linear-gradient(135deg, var(--luxury-cream) 0%, var(--luxury-beige) 100%);
+  border-bottom: 1px solid var(--luxury-border);
+  padding: 1.5rem;
+  font-weight: 300;
+  color: var(--luxury-charcoal);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  color: var(--luxury-charcoal);
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-bottom: 0.8rem;
+}
+
+.card-text {
+  color: var(--luxury-grey);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.card-footer {
+  background: var(--luxury-cream);
+  border-top: 1px solid var(--luxury-border);
+  padding: 1.5rem;
+}
+
+/* Image Styling - Enhanced from your original */
+.card-img-top {
+  border-radius: 12px 12px 0 0;
+  transition: all 0.3s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.02);
+}
+
+/* Gallery image styles - Keeping your functionality with luxury styling */
 .gallery-image-container {
   display: flex;
-  justify-content: center; /* center the image */
+  justify-content: center;
   margin: 20px 0;
+  background: var(--luxury-white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--luxury-shadow);
 }
 
 .gallery-image {
@@ -40,35 +237,170 @@ body {
   width: 100%;
   object-fit: contain; 
   border-radius: 8px;  
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+  border: 3px solid var(--luxury-beige);
 }
 
-/* style flash messages */
-.flash-notice {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 4px;
-}
-
-.flash-alert {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 4px;
-}
-
-/* form field styling */
-input[type="text"], textarea, select, input[type="file"] {
+/* Forms - Enhanced styling */
+.form-control, input[type="text"], textarea, select, input[type="file"] {
   width: 100%;
-  padding: 8px;
+  padding: 12px 15px;
   margin: 6px 0 12px 0;
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 2px solid var(--luxury-beige);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--luxury-white);
+  color: var(--luxury-charcoal);
+  transition: all 0.3s ease;
 }
 
+.form-control:focus, input[type="text"]:focus, textarea:focus, select:focus, input[type="file"]:focus {
+  border-color: var(--luxury-gold);
+  box-shadow: 0 0 0 0.2rem var(--luxury-shadow);
+  background: var(--luxury-white);
+  color: var(--luxury-charcoal);
+  outline: none;
+}
+
+.form-label {
+  color: var(--luxury-grey-dark);
+  font-weight: 400;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+/* File Upload Styling */
+input[type="file"] {
+  background: var(--luxury-cream);
+  border: 2px dashed var(--luxury-gold);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+  background: var(--luxury-beige);
+  border-color: var(--luxury-gold-dark);
+}
+
+/* Flash Messages - Enhanced from your original */
+.flash-notice, .alert-success {
+  background: linear-gradient(135deg, #d4f4dd 0%, #c8e6c9 100%);
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  font-weight: 300;
+  box-shadow: 0 2px 10px rgba(46, 125, 50, 0.1);
+}
+
+.flash-alert, .alert-danger {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  color: #c85a54;
+  border: 1px solid #f5c6cb;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  font-weight: 300;
+  box-shadow: 0 2px 10px rgba(200, 90, 84, 0.1);
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, var(--luxury-gold-light) 0%, var(--luxury-beige) 100%);
+  color: var(--luxury-grey-dark);
+  border: 1px solid var(--luxury-gold);
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  font-weight: 300;
+}
+
+/* Text Utilities */
+.text-muted {
+  color: var(--luxury-grey) !important;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Container Styling */
+.container, .container-fluid {
+  padding: 2rem 15px;
+}
+
+/* Empty State Styling */
+.py-5 {
+  padding: 4rem 0;
+}
+
+.py-5 .fa-images, .py-5 .fa-camera {
+  color: var(--luxury-gold);
+  opacity: 0.6;
+}
+
+/* Photo Display Page */
+.bg-dark {
+  background: linear-gradient(135deg, var(--luxury-charcoal) 0%, var(--luxury-grey-dark) 100%) !important;
+}
+
+.navbar-dark {
+  background: rgba(44, 44, 44, 0.95) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Button Groups */
+.btn-group .btn {
+  border-radius: 6px !important;
+  margin: 0 2px;
+}
+
+/* Gallery Grid */
+.row.g-3 > * {
+  padding: 1rem;
+}
+
+/* Hover Effects for Interactive Elements */
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--luxury-gold-dark);
+  text-decoration: none;
+}
+
+/* Professional spacing */
+.mb-4 {
+  margin-bottom: 2.5rem !important;
+}
+
+.mt-4 {
+  margin-top: 2.5rem !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 10px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .gallery-image-container {
+    padding: 1rem;
+  }
+}
