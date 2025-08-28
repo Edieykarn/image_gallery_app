@@ -1,43 +1,238 @@
-<div class="container mt-4 text-center">
-  <h2>Slideshow: <%= @gallery.title %></h2>
-
-  <% if @photos.any? %>
-    <div id="slideshow-container">
-      <% @photos.each_with_index do |photo, index| %>
-        <%= image_tag photo.display_image, 
-                      id: "slide-#{index}", 
-                      class: "img-fluid d-none", 
-                      style: "max-height: 80vh; max-width: 95vw;" %>
+<div class="slideshow-container">
+  <!-- Header Controls -->
+  <div class="slideshow-header">
+    <div class="slideshow-nav-left">
+      <%= link_to @gallery, class: "btn-slideshow-back" do %>
+        <i class="fas fa-arrow-left"></i> Back to Gallery
       <% end %>
     </div>
-
-    <div class="mt-3">
-      <button id="prev" class="btn btn-secondary">Previous</button>
-      <button id="next" class="btn btn-secondary">Next</button>
+    
+    <div class="slideshow-info">
+      <h1 class="slideshow-title"><%= @gallery.title %></h1>
+      <p class="slideshow-counter">
+        <span id="current-photo">1</span> / <span id="total-photos"><%= @photos.count %></span>
+      </p>
     </div>
-  <% else %>
-    <p>No photos in this gallery.</p>
-  <% end %>
+    
+    <div class="slideshow-nav-right">
+      <button id="fullscreen-btn" class="btn-slideshow-control" title="Fullscreen">
+        <i class="fas fa-expand"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Slideshow Area -->
+  <div class="slideshow-main">
+    <div class="slideshow-image-container" id="slideshow-container">
+      <% @photos.each_with_index do |photo, index| %>
+        <div class="slideshow-slide <%= 'active' if index == 0 %>" data-slide="<%= index %>">
+          <%= image_tag url_for(photo.display_image), 
+                        class: "slideshow-image", 
+                        alt: "Photo #{index + 1} from #{@gallery.title}",
+                        loading: index == 0 ? "eager" : "lazy" %>
+        </div>
+      <% end %>
+      
+      <!-- Navigation Arrows -->
+      <button class="slideshow-arrow slideshow-prev" id="prev-btn">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="slideshow-arrow slideshow-next" id="next-btn">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Controls -->
+  <div class="slideshow-controls">
+    <div class="slideshow-playback">
+      <button id="play-pause-btn" class="btn-slideshow-primary">
+        <i class="fas fa-play" id="play-icon"></i>
+        <i class="fas fa-pause" id="pause-icon" style="display: none;"></i>
+        <span id="play-text">Start Slideshow</span>
+      </button>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="slideshow-progress">
+      <div class="slideshow-progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <!-- Thumbnail Navigation -->
+    <div class="slideshow-thumbnails" id="thumbnails">
+      <% @photos.each_with_index do |photo, index| %>
+        <button class="slideshow-thumbnail <%= 'active' if index == 0 %>" 
+                data-slide="<%= index %>"
+                title="Photo <%= index + 1 %>">
+          <%= image_tag url_for(photo.thumbnail), alt: "Thumbnail #{index + 1}" %>
+        </button>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const slides = document.querySelectorAll("[id^='slide-']");
-  let current = 0;
-
-  if(slides.length > 0) slides[0].classList.remove("d-none");
-
-  document.getElementById("next")?.addEventListener("click", function() {
-    slides[current].classList.add("d-none");
-    current = (current + 1) % slides.length;
-    slides[current].classList.remove("d-none");
+document.addEventListener('DOMContentLoaded', function() {
+  const slides = document.querySelectorAll('.slideshow-slide');
+  const thumbnails = document.querySelectorAll('.slideshow-thumbnail');
+  const totalPhotos = slides.length;
+  let currentSlide = 0;
+  let isPlaying = false;
+  let slideInterval;
+  let progressInterval;
+  
+  // Elements
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const playText = document.getElementById('play-text');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const currentPhotoSpan = document.getElementById('current-photo');
+  const progressBar = document.getElementById('progress-bar');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+  const slideshowContainer = document.getElementById('slideshow-container');
+  
+  // Fixed timing - Normal speed (3 seconds)
+  const slideTiming = 3000;
+  
+  // Initialize
+  updateSlideCounter();
+  
+  // Play/Pause functionality
+  playPauseBtn.addEventListener('click', function() {
+    if (isPlaying) {
+      stopSlideshow();
+    } else {
+      startSlideshow();
+    }
   });
-
-  document.getElementById("prev")?.addEventListener("click", function() {
-    slides[current].classList.add("d-none");
-    current = (current - 1 + slides.length) % slides.length;
-    slides[current].classList.remove("d-none");
+  
+  function startSlideshow() {
+    isPlaying = true;
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'inline';
+    playText.textContent = 'Pause';
+    
+    slideInterval = setInterval(nextSlide, slideTiming);
+    startProgressBar(slideTiming);
+  }
+  
+  function stopSlideshow() {
+    isPlaying = false;
+    playIcon.style.display = 'inline';
+    pauseIcon.style.display = 'none';
+    playText.textContent = 'Start Slideshow';
+    
+    clearInterval(slideInterval);
+    clearInterval(progressInterval);
+    progressBar.style.width = '0%';
+  }
+  
+  // Navigation
+  function goToSlide(slideIndex) {
+    slides[currentSlide].classList.remove('active');
+    thumbnails[currentSlide].classList.remove('active');
+    
+    currentSlide = slideIndex;
+    
+    slides[currentSlide].classList.add('active');
+    thumbnails[currentSlide].classList.add('active');
+    
+    updateSlideCounter();
+    
+    if (isPlaying) {
+      stopSlideshow();
+      startSlideshow(); // Restart with fresh timing
+    }
+  }
+  
+  function nextSlide() {
+    const next = (currentSlide + 1) % totalPhotos;
+    goToSlide(next);
+  }
+  
+  function prevSlide() {
+    const prev = (currentSlide - 1 + totalPhotos) % totalPhotos;
+    goToSlide(prev);
+  }
+  
+  // Event listeners
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+  
+  // Thumbnail clicks
+  thumbnails.forEach((thumb, index) => {
+    thumb.addEventListener('click', () => goToSlide(index));
   });
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    switch(e.key) {
+      case 'ArrowLeft':
+        prevSlide();
+        break;
+      case 'ArrowRight':
+      case ' ':
+        if (e.key === ' ') e.preventDefault();
+        nextSlide();
+        break;
+      case 'Escape':
+        if (isPlaying) stopSlideshow();
+        break;
+    }
+  });
+  
+  // Fullscreen functionality
+  fullscreenBtn.addEventListener('click', function() {
+    if (!document.fullscreenElement) {
+      slideshowContainer.requestFullscreen().catch(err => {
+        console.log('Error attempting to enable fullscreen:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  });
+  
+  // Progress bar
+  function startProgressBar(duration) {
+    let progress = 0;
+    const increment = 100 / (duration / 50); // Update every 50ms
+    
+    progressInterval = setInterval(() => {
+      progress += increment;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+      
+      if (progress >= 100) {
+        progress = 0;
+      }
+    }, 50);
+  }
+  
+  function updateSlideCounter() {
+    currentPhotoSpan.textContent = currentSlide + 1;
+  }
+  
+  // Auto-hide controls
+  let controlsTimeout;
+  const controls = document.querySelector('.slideshow-controls');
+  const header = document.querySelector('.slideshow-header');
+  
+  function showControls() {
+    controls.classList.remove('hidden');
+    header.classList.remove('hidden');
+    
+    clearTimeout(controlsTimeout);
+    controlsTimeout = setTimeout(() => {
+      if (isPlaying) {
+        controls.classList.add('hidden');
+        header.classList.add('hidden');
+      }
+    }, 3000);
+  }
+  
+  // Show controls on mouse movement
+  document.addEventListener('mousemove', showControls);
+  document.addEventListener('click', showControls);
 });
 </script>
-
