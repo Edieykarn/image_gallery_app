@@ -54,7 +54,7 @@ gem "image_processing", "~> 1.2"
 gem "mini_magick"
 
 # UI and styling
-gem "bootstrap", "~> 5.1.3"
+gem "bootstrap", "~> 5.3.5"
 gem "jquery-rails"
 
 
